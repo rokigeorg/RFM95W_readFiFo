@@ -51,14 +51,6 @@ static const int CHANNEL =0;
 #define REG_SYNC_WORD				0x39
 #define REG_VERSION	  				0x42
 
-#define SX72_MODE_RX_CONTINUOS      0x85
-#define SX72_MODE_TX                0x83
-#define SX72_MODE_SLEEP             0x80
-#define SX72_MODE_STANDBY           0x81
-
-#define RH_RF95_LONG_RANGE_MODE	    0x80
-#define RH_RF95_MODE_SLEEP	    0x01
-
 #define PAYLOAD_LENGTH              0x40
 
 // LOW NOISE AMPLIFIER
@@ -71,13 +63,6 @@ static const int CHANNEL =0;
 #define REG1                        0x0A
 #define REG2                        0x84
 
-#define SX72_MC2_FSK                0x00
-#define SX72_MC2_SF7                0x70
-#define SX72_MC2_SF8                0x80
-#define SX72_MC2_SF9                0x90
-#define SX72_MC2_SF10               0xA0
-#define SX72_MC2_SF11               0xB0
-#define SX72_MC2_SF12               0xC0
 
 #define SX72_MC1_LOW_DATA_RATE_OPTIMIZE  0x01 // mandated for SF11 and SF12
 
@@ -106,7 +91,6 @@ static const int CHANNEL =0;
 
 //############## Copied from Radio Head Library (OpenSource) / RFM95.h ########
 // Register names (LoRa Mode, from table 85)
-
 
 
 #define RH_RF95_REG_00_FIFO                                0x00
