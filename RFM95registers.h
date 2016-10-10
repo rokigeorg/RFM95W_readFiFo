@@ -227,4 +227,13 @@
 // RH_RF95_REG_4D_PA_DAC                              0x4d
 #define RH_RF95_PA_DAC_DISABLE                        0x04
 #define RH_RF95_PA_DAC_ENABLE                         0x07
+
+
+// Max number of octets the LORA Rx/Tx FIFO can hold
+#define RH_RF95_FIFO_SIZE 255
+
+// This is the maximum number of bytes that can be carried by the LORA.
+// We use some for headers, keeping fewer for RadioHead messages
+#define RH_RF95_MAX_PAYLOAD_LEN RH_RF95_FIFO_SIZE
+
 //###########################################
