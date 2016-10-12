@@ -1,6 +1,7 @@
 #include <string>
 #include <stdint.h>
 #include <stdio.h>
+#include <errno.h>
 #include <sys/types.h>
 //#include <sys/socket.h>
 //#include <arpa/inet.h>
@@ -20,14 +21,36 @@
 
 using namespace std;
 
+/*******************************************************************************
+ *
+ * Configure these values!
+ *
+ *******************************************************************************/
+
 // SX1276 - Raspberry connections
 int ssPin = 6;
 int dio0  = 7;
 int RST   = 0;
 
+#define RF95_FREQ 868.1
+#define RF95_SF 7       //SF 6 64 chips/symbol; SF 7 128 chips/symbol (default); SF 8 256 chips/symbol; SF 9 512 chips/symbol; SF 10 1024 chips/symbol; SF 11 2048 chips/symbol; SF 12 4096 chips/symbol
+#define RF95_SYMB_TIMEOUT 0x08
+#define RF95_MAX_PAYLOAD_LENGTH 0x80
+#define PAYLOAD_LENGTH 0x40
+#define FREQ_HOP_PERIOD 0x00 //0x00 means freq hopping is turned off
+//define LNA_MAX_GAIN //LowNoiseAmplifier Gain if the gateway is not set in automatic gain controll
+
+#define SX1276_MODE_Continuos 0x85
+/*******************************************************************************
+ *
+ *
+ *******************************************************************************/
+
+
 static const int CHANNEL =0;
 
 // ########### global Variables ########
+float  _freq = RF95_FREQ; // in Mhz! (868.1)
 
 typedef enum
 {
@@ -63,6 +86,9 @@ volatile uint16_t   _rxBad;
 volatile uint16_t   _rxGood;
 /// Count of the number of bad messages (correct checksum etc) received
 volatile uint16_t   _txGood;
+
+// System error number indicator for error handling. If system fails at any point this val is set by the system to a an Error Number.
+extern int errno = 0;
 
 
 //################# copyed from single channel gateway Copyright (c) 2015 Thomas Telkamp ##########################     
@@ -133,6 +159,13 @@ void spiBurstRead(uint8_t *payload)
     return 0;
 }
 
+void resetLoRaModul(){
+    digitalWrite(RST, HIGH);
+    delay(100);
+    digitalWrite(RST, LOW);
+    delay(100);
+}
+
 void handleInterrupt()
 {
     // Read the interrupt register
@@ -174,34 +207,119 @@ void handleInterrupt()
 }
 
 
+bool setFrequency(float centre)
+{
+    // Frf = FRF / FSTEP
+    uint32_t frf = (centre * 1000000.0) / RH_RF95_FSTEP;
+    writeRegister(RH_RF95_REG_06_FRF_MSB, (frf >> 16) & 0xff);
+    writeRegister(RH_RF95_REG_07_FRF_MID, (frf >> 8) & 0xff);
+    writeRegister(RH_RF95_REG_08_FRF_LSB, frf & 0xff);
+
+    return true;
+}
+
+void setModemRegisters(){
+    writeRegister(RH_RF95_REG_1D_MODEM_CONFIG1, 0x72);
+    writeRegister(RH_RF95_REG_1E_MODEM_CONFIG2, (sf<<4) | 0x04);
+    writeRegister(RH_RF95_REG_26_MODEM_CONFIG3, 0x04);  //[7-4 bit: unused][3 bit: 0->static node / 1->mobile node] [2 bit: 0->LNA gain set by register LnaGain / 1->LNA gain set by the internal AGC loop][1-0 bit: reserved]
+    return 0;
+}
+/* //Todo: settings combinationen zu einem bauen und an setRegisters übergeben 
+selectModemSettings(){
+    uint8_t modemConfigVals[3] = {0x00,0x00,0x00};
+
+    //select BW and CR and Header (explicite / impliced)
+    enum sf_t { SF7=7, SF8, SF9, SF10, SF11, SF12 };
+    uint8_t combinations[16]={ 0x00, 0x01,0x02,0x03,0x04,0x05,0x06,0x07}
+    //select BW and CR and Header (explicite / impliced)
+
+}
+*/
+
+void setSymbTimeout(uint8_t timeOutPeriod){
+    writeRegister(RH_RF95_REG_1F_SYMB_TIMEOUT_LSB,   timeOutPeriod);
+    return 0;
+}
+
+void setMaxPayloadLength(uint8_t mPayloadLength){
+    //Maximum payload length; if header payload length exceeds value a header CRC error is generated. Allows filtering of packet with a bad size.
+    writeRegister(RH_RF95_REG_23_MAX_PAYLOAD_LENGTH,   mPayloadLength);
+    return 0;
+}
+
+void setPayloadLength(uint8_t payll){
+    writeRegister(RH_RF95_REG_22_PAYLOAD_LENGTH,  payll);
+    return 0;
+}
+
+void setFrequencyHoppingPeriod(uint8_t fhhp){
+    writeRegister(RH_RF95_REG_24_HOP_PERIOD,fhhp);
+    return0;
+}
+
+void setLnaGain(uint8_t lnaMaxGain){
+    writeRegister(RH_RF95_REG_0C_LNA, LNA_MAX_GAIN);  // max lna gain
+    return 0;
+}
+
 void SetupLoRa()
 {
-    	digitalWrite(RST, HIGH);
-    	delay(100);
-    	digitalWrite(RST, LOW);
-    	delay(100);
+    //Reset of the RFM95W
+    resetLoRaModul();
 
 	printf("SX1276 detected, starting.\n");
-        
-	// sx1276?
-        digitalWrite(RST, LOW);
-        delay(100);
-        digitalWrite(RST, HIGH);
-        delay(100);
-        uint8_t version = readRegister(REG_VERSION);
-        if (version == 0x12) {
-            // sx1276
-            printf("SX1276 detected, starting.\n");
-        } else {
-            printf("Unrecognized transceiver.\n");
-            //printf("Version: 0x%x\n",version);
-            exit(1);
-        	}
-    	
 
+    uint8_t version = readRegister(REG_VERSION);
+    if (version == 0x12) {
+        // sx1276
+        printf("SX1276 detected, starting.\n");
+    } else {
+        printf("Unrecognized transceiver.\n");
+        //printf("Version: 0x%x\n",version);
+        exit(1);
+    }
+    
 	// Set Continous Sleep Mode
    	writeRegister(REG_OPMODE, RH_RF95_LONG_RANGE_MODE);
     printf("Set in LONG_RANGE_MODE.\n");
+
+    //set Frequency to 868.1 MHz by default
+    printf("Set frequency to: %d Hz\n", _freq);
+    setFrequency(_freq)
+    if(errno != 0){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror after setFrequency");}
+
+    setModemRegisters();
+    if(errno != 0){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror after setModemRegisters");}
+
+    //setTimeout RX operation time-out value expressed as number of symbols:
+    setSymbTimeout(RF95_SYMB_TIMEOUT);
+    if(errno != 0){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror after setSymbTimeout");}
+    //set Max Payload length to filter for the right packetes
+    setMaxPayloadLength(RF95_MAX_PAYLOAD_LENGTH);
+    if(errno != 0){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror after setMaxPayloadLength");}
+
+    setPayloadLength(PAYLOAD_LENGTH);
+    if(errno != 0){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror after setPayloadLength");}
+
+    setFrequencyHoppingPeriod(FREQ_HOP_PERIOD);
+    if(errno != 0){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror after setFrequencyHoppingPeriod");}
+
+    writeRegister(REG_FIFO_ADDR_PTR, readRegister(REG_FIFO_RX_BASE_AD));
+
+    // Set Continous Receive Mode
+    writeRegister(RH_RF95_REG_01_OP_MODE, SX1276_MODE_Continuos);
 }
 
 
