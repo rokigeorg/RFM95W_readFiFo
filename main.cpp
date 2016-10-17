@@ -32,6 +32,9 @@ int ssPin = 6;
 int dio0  = 7;
 int RST   = 0;
 
+#define REG_VERSION                 0x42
+
+
 #define RF95_FREQ 868.1
 #define RF95_SF 7       //SF 6 64 chips/symbol; SF 7 128 chips/symbol (default); SF 8 256 chips/symbol; SF 9 512 chips/symbol; SF 10 1024 chips/symbol; SF 11 2048 chips/symbol; SF 12 4096 chips/symbol
 #define RF95_SYMB_TIMEOUT 0x08
@@ -147,36 +150,6 @@ void setModeIdle()
     }
 }
 
-/*
-int available()
-{
-  return readRegister(RH_RF95_REG_13_RX_NB_BYTES);
-}
-
-int readFiFo()
-{
-  if (!available()) {
-    return -1;
-  }
-
-  return readRegister(REG_FIFO);
-}
-
-bool receivePkt(char *payload)
-{
-
-    byte currentAddr = readRegister(REG_FIFO_RX_CURRENT_ADDR);
-    byte receivedCount = readRegister(REG_RX_NB_BYTES);
-    
-    
-    for(int i = 0; i < receivedCount; i++)
-    {
-    payload[i] = (char)readRegister(REG_FIFO);
-    }
-    return true;
-}
-
-*/
 void spiBurstRead(char * payload)
 {
     
