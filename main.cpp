@@ -96,8 +96,7 @@ extern int errno;
 //################# copyed from single channel gateway Copyright (c) 2015 Thomas Telkamp ##########################     
 
 void die(const char *s)
-{
-    
+{   
     exit(1);
 }
 
@@ -301,7 +300,7 @@ void SetupLoRa()
 
 	printf("SX1276 detected, starting.\n");
 
-    uint8_t version = readRegister(REG_VERSION);
+    uint8_t version = readRegister(0x42);//REG_VERSION);
     if (version == 0x12) {
         // sx1276
         printf("SX1276 detected, starting.\n");
