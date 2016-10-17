@@ -236,4 +236,10 @@
 // We use some for headers, keeping fewer for RadioHead messages
 #define RH_RF95_MAX_PAYLOAD_LEN RH_RF95_FIFO_SIZE
 
+// The crystal oscillator frequency of the module
+#define RH_RF95_FXOSC 32000000.0
+
+// The Frequency Synthesizer step = RH_RF95_FXOSC / 2^^19
+#define RH_RF95_FSTEP  (RH_RF95_FXOSC / 524288)
+
 //###########################################

@@ -47,10 +47,13 @@ int RST   = 0;
  *******************************************************************************/
 
 
+
 static const int CHANNEL =0;
 
 // ########### global Variables ########
 float  _freq = RF95_FREQ; // in Mhz! (868.1)
+// Set spreading factor (SF7 - SF12)
+uint8_t sf = RF95_SF;
 
 typedef enum
 {
@@ -144,7 +147,7 @@ void setModeIdle()
     }
 }
 
-void spiBurstRead(const uint8_t * payload)
+void spiBurstRead(uint8_t * payload)
 {
     
     uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
@@ -279,7 +282,7 @@ void SetupLoRa()
 
     //set Frequency to 868.1 MHz by default
     printf("Set frequency to: %d Hz\n", _freq);
-    setFrequency(_freq)
+    setFrequency(_freq);
     if(errno != 0){
         fprintf(stderr, "Value of errno: %d\n", errno);
         perror("Error printed by perror after setFrequency");}
@@ -318,7 +321,7 @@ void SetupLoRa()
 
 
 
-int main (void){
+void main (void){
 	printf("Start main function.");
 	wiringPiSetup();
 	pinMode(ssPin, OUTPUT);
@@ -342,17 +345,9 @@ int main (void){
 
 
 	int i;
-	for(i=0; i < sizeof(registers);i++){
-
-        cout << registerNames[i] << "Addr -> 0x";
-		printf("%X", registers[i]);
-		printf("%s",(char *)(": ") );
-		printf("%X \n", readRegister(registers[i]) );
-		
+	for(i=0; i < sizeof(_buf);i++){
+		printf("%s",(char *) _buf[i]);		
 	}
 	
 	//while(1);
- 
-
-	return 0;
 }
