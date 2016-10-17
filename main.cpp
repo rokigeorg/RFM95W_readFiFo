@@ -218,12 +218,6 @@ bool setFrequency(uint32_t freq)
     writeRegister(RH_RF95_REG_06_FRF_MSB, (uint8_t)(frf>>16) );
     writeRegister(RH_RF95_REG_07_FRF_MID, (uint8_t)(frf>> 8) );
     writeRegister(RH_RF95_REG_08_FRF_LSB, (uint8_t)(frf>> 0) );
-    // Frf = FRF / FSTEP
-    //uint32_t frf = (centre * 1000000.0) / RH_RF95_FSTEP;
-    //writeRegister(RH_RF95_REG_06_FRF_MSB, (frf >> 16) & 0xff);
-    //writeRegister(RH_RF95_REG_07_FRF_MID, (frf >> 8) & 0xff);
-    //writeRegister(RH_RF95_REG_08_FRF_LSB, frf & 0xff);
-
     return true;
 }
 
@@ -349,7 +343,17 @@ int main (void){
 
 	SetupLoRa();	
 	printf("Start WiringPi function.\n");
-	
+	  
+    handleInterrupt();
+    //print buffer
+    printf("Buffer: \n "); 
+    int i;
+    
+    for(i=0; i < sizeof(_buf);i++){
+    printf("%s ", _buf[i]);     
+    }
+
+
 
     while(1){
         //check if interrupt flag has been set
