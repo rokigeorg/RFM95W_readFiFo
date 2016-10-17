@@ -35,7 +35,7 @@ int RST   = 0;
 
 #define RF95_FREQ 868100000 //868.1 MHz
 #define RF95_SF 7       //SF 6 64 chips/symbol; SF 7 128 chips/symbol (default); SF 8 256 chips/symbol; SF 9 512 chips/symbol; SF 10 1024 chips/symbol; SF 11 2048 chips/symbol; SF 12 4096 chips/symbol
-#define RF95_SYMB_TIMEOUT 0x08
+#define RF95_SYMB_TIMEOUT   0x64 //0x08
 #define RF95_MAX_PAYLOAD_LENGTH 0x80
 #define PAYLOAD_LENGTH 0x40
 #define FREQ_HOP_PERIOD 0x00 //0x00 means freq hopping is turned off
