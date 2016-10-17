@@ -32,8 +32,6 @@ int ssPin = 6;
 int dio0  = 7;
 int RST   = 0;
 
-#define REG_VERSION                 0x42
-
 
 #define RF95_FREQ 868.1
 #define RF95_SF 7       //SF 6 64 chips/symbol; SF 7 128 chips/symbol (default); SF 8 256 chips/symbol; SF 9 512 chips/symbol; SF 10 1024 chips/symbol; SF 11 2048 chips/symbol; SF 12 4096 chips/symbol
@@ -272,7 +270,12 @@ void SetupLoRa()
     delay(100);
     printf("SX1276 detected, starting.\n");
 
-    uint8_t version = readRegister(0x42);//REG_VERSION);
+    digitalWrite(RST, LOW);
+    delay(100);
+    digitalWrite(RST, HIGH);
+    delay(100);
+
+    uint8_t version = readRegister(REG_VERSION);
     if (version == 0x12) {
         // sx1276
         printf("SX1276 detected, starting.\n");
