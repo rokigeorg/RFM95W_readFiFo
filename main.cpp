@@ -144,7 +144,7 @@ void setModeIdle()
     }
 }
 
-void spiBurstRead(uint8_t * payload)
+void spiBurstRead(const uint8_t * payload)
 {
     
     uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
@@ -222,7 +222,6 @@ void setModemRegisters(){
     writeRegister(RH_RF95_REG_1D_MODEM_CONFIG1, 0x72);
     writeRegister(RH_RF95_REG_1E_MODEM_CONFIG2, (sf<<4) | 0x04);
     writeRegister(RH_RF95_REG_26_MODEM_CONFIG3, 0x04);  //[7-4 bit: unused][3 bit: 0->static node / 1->mobile node] [2 bit: 0->LNA gain set by register LnaGain / 1->LNA gain set by the internal AGC loop][1-0 bit: reserved]
-    return 0;
 }
 /* //Todo: settings combinationen zu einem bauen und an setRegisters übergeben 
 selectModemSettings(){
@@ -238,28 +237,23 @@ selectModemSettings(){
 
 void setSymbTimeout(uint8_t timeOutPeriod){
     writeRegister(RH_RF95_REG_1F_SYMB_TIMEOUT_LSB,   timeOutPeriod);
-    return 0;
 }
 
 void setMaxPayloadLength(uint8_t mPayloadLength){
     //Maximum payload length; if header payload length exceeds value a header CRC error is generated. Allows filtering of packet with a bad size.
     writeRegister(RH_RF95_REG_23_MAX_PAYLOAD_LENGTH,   mPayloadLength);
-    return 0;
 }
 
 void setPayloadLength(uint8_t payll){
     writeRegister(RH_RF95_REG_22_PAYLOAD_LENGTH,  payll);
-    return 0;
 }
 
 void setFrequencyHoppingPeriod(uint8_t fhhp){
     writeRegister(RH_RF95_REG_24_HOP_PERIOD,fhhp);
-    return0;
 }
 
 void setLnaGain(uint8_t lnaMaxGain){
     writeRegister(RH_RF95_REG_0C_LNA, LNA_MAX_GAIN);  // max lna gain
-    return 0;
 }
 
 void SetupLoRa()
