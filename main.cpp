@@ -371,7 +371,7 @@ int main (void){
 
     // printAllRegisters
     printAllRegisters();
-    
+
     handleInterrupt();
     //print buffer
     printf("Buffer: \n "); 
@@ -387,6 +387,7 @@ int main (void){
           if(digitalRead(dio0) == TRUE)
         {
             handleInterrupt();
+            printf("Interrupt !!!!!!!!!!!!!!!!! \n "); 
 
             //print buffer
             printf("Buffer: \n "); 
@@ -396,6 +397,16 @@ int main (void){
                 printf("%s ", _buf[i]);     
             }
         }
+
+        handleInterrupt();
+        //print buffer
+        printf("Buffer: \n "); 
+        int i;
+                    
+        for(i=0; i < sizeof(_buf);i++){
+        printf("%s ", _buf[i]);     
+        }
+
     }
 
 	
