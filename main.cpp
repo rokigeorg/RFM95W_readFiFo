@@ -298,8 +298,7 @@ void SetupLoRa()
     delay(100);
     digitalWrite(RST, LOW);
     delay(100);
-
-	printf("SX1276 detected, starting.\n");
+    printf("SX1276 detected, starting.\n");
 
     uint8_t version = readRegister(REG_VERSION);
     if (version == 0x12) {
@@ -308,7 +307,7 @@ void SetupLoRa()
     } else {
         printf("Unrecognized transceiver.\n");
         printf("Version: 0x%x\n",version);
-        exit(1);
+       // exit(1);
     }
     
 	// Set Continous Sleep Mode
