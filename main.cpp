@@ -63,8 +63,6 @@ RHModeRx                ///< Transport is in the process of receiving a message.
 
 /// The current transport operating mode
 volatile RHMode     _mode;
-uint8_t _rxBad = 0;
-int8_t _lastRssi = 0;
 /// Index of next interrupt number to use in _deviceForInterrupt
 static uint8_t      _interruptCount;
 /// The configured interrupt pin connected to this instance
@@ -79,16 +77,16 @@ uint8_t             _buf[RH_RF95_MAX_PAYLOAD_LEN];
 /// True when there is a valid message in the buffer
 volatile bool       _rxBufValid;
 /// The value of the last received RSSI value, in some transport specific units
-volatile int8_t     _lastRssi;
+volatile int8_t     _lastRssi =0;
 /// Count of the number of bad messages (eg bad checksum etc) received
-volatile uint16_t   _rxBad;
+volatile uint16_t   _rxBad =0;
 /// Count of the number of successfully transmitted messaged
 volatile uint16_t   _rxGood;
 /// Count of the number of bad messages (correct checksum etc) received
 volatile uint16_t   _txGood;
 
 // System error number indicator for error handling. If system fails at any point this val is set by the system to a an Error Number.
-extern int errno = 0;
+extern int errno;
 
 
 //################# copyed from single channel gateway Copyright (c) 2015 Thomas Telkamp ##########################     
