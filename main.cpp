@@ -293,7 +293,11 @@ void setLnaGain(uint8_t lnaMaxGain){
 void SetupLoRa()
 {
     //Reset of the RFM95W
-    resetLoRaModul();
+    //resetLoRaModul();
+    digitalWrite(RST, HIGH);
+    delay(100);
+    digitalWrite(RST, LOW);
+    delay(100);
 
 	printf("SX1276 detected, starting.\n");
 
