@@ -303,7 +303,7 @@ void SetupLoRa()
         printf("SX1276 detected, starting.\n");
     } else {
         printf("Unrecognized transceiver.\n");
-        //printf("Version: 0x%x\n",version);
+        printf("Version: 0x%x\n",version);
         exit(1);
     }
     
