@@ -144,7 +144,7 @@ void setModeIdle()
     }
 }
 
-void spiBurstRead(uint8_t *payload)
+void spiBurstRead(uint8_t * payload)
 {
     
     uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
@@ -154,6 +154,7 @@ void spiBurstRead(uint8_t *payload)
     {
         payload[i] = readRegister(REG_FIFO);
     }
+
 }
 
 void resetLoRaModul(){
@@ -186,6 +187,8 @@ void handleInterrupt()
         // this is according to the doc, but is it really correct?
         // weakest receiveable signals are reported RSSI at about -66
         _lastRssi = readRegister(RH_RF95_REG_1A_PKT_RSSI_VALUE) - 137;
+
+    }
     /*    
         // We have received a message.
             validateRxBuf(); 
