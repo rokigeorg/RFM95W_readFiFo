@@ -33,7 +33,7 @@ int dio0  = 7;
 int RST   = 0;
 
 
-//#define RF95_FREQ 868.1
+#define RF95_FREQ 868100000 //868.1 MHz
 #define RF95_SF 7       //SF 6 64 chips/symbol; SF 7 128 chips/symbol (default); SF 8 256 chips/symbol; SF 9 512 chips/symbol; SF 10 1024 chips/symbol; SF 11 2048 chips/symbol; SF 12 4096 chips/symbol
 #define RF95_SYMB_TIMEOUT 0x08
 #define RF95_MAX_PAYLOAD_LENGTH 0x80
@@ -52,7 +52,7 @@ int RST   = 0;
 static const int CHANNEL =0;
 
 // ########### global Variables ########
-float  _freq = 868.1; // in Mhz! (868.1)
+uint32_t  _freq = RF95_FREQ; // in Mhz! (868.1)
 // Set spreading factor (SF7 - SF12)
 uint8_t sf = RF95_SF;
 
@@ -211,13 +211,22 @@ void handleInterrupt()
 }
 
 
-bool setFrequency(float centre)
+    
+
+
+
+bool setFrequency(uint32_t centre)
 {
+
+    uint64_t frf = ((uint64_t)freq << 19) / 32000000;
+    writeRegister(RH_RF95_REG_06_FRF_MSB, (uint8_t)(frf>>16) );
+    writeRegister(RH_RF95_REG_07_FRF_MID, (uint8_t)(frf>> 8) );
+    writeRegister(RH_RF95_REG_08_FRF_LSB, (uint8_t)(frf>> 0) );
     // Frf = FRF / FSTEP
-    uint32_t frf = (centre * 1000000.0) / RH_RF95_FSTEP;
-    writeRegister(RH_RF95_REG_06_FRF_MSB, (frf >> 16) & 0xff);
-    writeRegister(RH_RF95_REG_07_FRF_MID, (frf >> 8) & 0xff);
-    writeRegister(RH_RF95_REG_08_FRF_LSB, frf & 0xff);
+    //uint32_t frf = (centre * 1000000.0) / RH_RF95_FSTEP;
+    //writeRegister(RH_RF95_REG_06_FRF_MSB, (frf >> 16) & 0xff);
+    //writeRegister(RH_RF95_REG_07_FRF_MID, (frf >> 8) & 0xff);
+    //writeRegister(RH_RF95_REG_08_FRF_LSB, frf & 0xff);
 
     return true;
 }
