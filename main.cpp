@@ -148,7 +148,7 @@ void spiBurstRead(uint8_t *payload)
 {
     
     uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
-    receivedbytes = receivedCount;
+    //receivedbytes = receivedCount;
         
     for(int i = 0; i < receivedCount; i++)
     {
