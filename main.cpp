@@ -211,11 +211,7 @@ void handleInterrupt()
 }
 
 
-    
-
-
-
-bool setFrequency(uint32_t centre)
+bool setFrequency(uint32_t freq)
 {
 
     uint64_t frf = ((uint64_t)freq << 19) / 32000000;
