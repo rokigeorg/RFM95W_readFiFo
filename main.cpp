@@ -163,7 +163,7 @@ int readFiFo()
   return readRegister(REG_FIFO);
 }
 
-boolean receivePkt(char *payload)
+bool receivePkt(char *payload)
 {
 
     byte currentAddr = readRegister(REG_FIFO_RX_CURRENT_ADDR);
@@ -213,7 +213,7 @@ void handleInterrupt()
         
         // Reset the fifo read ptr to the beginning of the packet
         writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
-        spiBurstRead(&_buf);
+        spiBurstRead(_buf);
         _bufLen = len;
         writeRegister(RH_RF95_REG_12_IRQ_FLAGS, 0xff); // Clear all IRQ flags
         
