@@ -76,7 +76,8 @@ uint8_t             _myInterruptIndex;
 /// Number of octets in the buffer
 volatile uint8_t    _bufLen;
 /// The receiver/transmitter buffer
-uint8_t             _buf[RH_RF95_MAX_PAYLOAD_LEN];
+//uint8_t
+char             _buf[RH_RF95_MAX_PAYLOAD_LEN];
 /// True when there is a valid message in the buffer
 volatile bool       _rxBufValid;
 /// The value of the last received RSSI value, in some transport specific units
@@ -147,7 +148,37 @@ void setModeIdle()
     }
 }
 
-void spiBurstRead(uint8_t * payload)
+
+int available()
+{
+  return readRegister(RH_RF95_REG_13_RX_NB_BYTES);
+}
+
+int readFiFo()
+{
+  if (!available()) {
+    return -1;
+  }
+
+  return readRegister(REG_FIFO);
+}
+
+boolean receivePkt(char *payload)
+{
+
+    byte currentAddr = readRegister(REG_FIFO_RX_CURRENT_ADDR);
+    byte receivedCount = readRegister(REG_RX_NB_BYTES);
+    
+    
+    for(int i = 0; i < receivedCount; i++)
+    {
+    payload[i] = (char)readRegister(REG_FIFO);
+    }
+    return true;
+}
+
+
+void spiBurstRead(char * payload)
 {
     
     uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
@@ -321,7 +352,7 @@ void SetupLoRa()
 
 
 
-void main (void){
+int main (void){
 	printf("Start main function.");
 	wiringPiSetup();
 	pinMode(ssPin, OUTPUT);
@@ -350,4 +381,5 @@ void main (void){
 	}
 	
 	//while(1);
+    return 0;
 }
