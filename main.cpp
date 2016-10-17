@@ -148,7 +148,7 @@ void setModeIdle()
     }
 }
 
-
+/*
 int available()
 {
   return readRegister(RH_RF95_REG_13_RX_NB_BYTES);
@@ -177,7 +177,7 @@ bool receivePkt(char *payload)
     return true;
 }
 
-
+*/
 void spiBurstRead(char * payload)
 {
     
