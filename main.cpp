@@ -33,7 +33,7 @@ int dio0  = 7;
 int RST   = 0;
 
 
-#define RF95_FREQ 868.1
+//#define RF95_FREQ 868.1
 #define RF95_SF 7       //SF 6 64 chips/symbol; SF 7 128 chips/symbol (default); SF 8 256 chips/symbol; SF 9 512 chips/symbol; SF 10 1024 chips/symbol; SF 11 2048 chips/symbol; SF 12 4096 chips/symbol
 #define RF95_SYMB_TIMEOUT 0x08
 #define RF95_MAX_PAYLOAD_LENGTH 0x80
@@ -52,7 +52,7 @@ int RST   = 0;
 static const int CHANNEL =0;
 
 // ########### global Variables ########
-float  _freq = RF95_FREQ; // in Mhz! (868.1)
+float  _freq = 868.1; // in Mhz! (868.1)
 // Set spreading factor (SF7 - SF12)
 uint8_t sf = RF95_SF;
 
@@ -279,6 +279,7 @@ void SetupLoRa()
     if (version == 0x12) {
         // sx1276
         printf("SX1276 detected, starting.\n");
+        printf("Version: 0x%x\n",version);
     } else {
         printf("Unrecognized transceiver.\n");
         printf("Version: 0x%x\n",version);
@@ -287,7 +288,7 @@ void SetupLoRa()
     
 	// Set Continous Sleep Mode
    	writeRegister(REG_OPMODE, RH_RF95_LONG_RANGE_MODE);
-    printf("Set in LONG_RANGE_MODE.\n");
+    printf("Set in LONG_RANGE_MODE. REG_OPMODE value: %x \n", readRegister(REG_OPMODE));
 
     //set Frequency to 868.1 MHz by default
     printf("Set frequency to: %d Hz\n", _freq);
