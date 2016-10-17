@@ -154,7 +154,6 @@ void spiBurstRead(uint8_t *payload)
     {
         payload[i] = readRegister(REG_FIFO);
     }
-    return 0;
 }
 
 void resetLoRaModul(){
