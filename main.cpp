@@ -367,19 +367,24 @@ int main (void){
 	printf("Start WiringPi function.\n");
 	
 
-    //check if interrupt flag has been set
-    //RFM95 Modul sets DIO0 pin (check pinlayout on the breakout board [Adafruit RFM9x -> D]to high when message arrives 
-      if(digitalRead(dio0) == TRUE)
-    {
-        handleInterrupt();
+    while(1){
+        //check if interrupt flag has been set
+        //RFM95 Modul sets DIO0 pin (check pinlayout on the breakout board [Adafruit RFM9x -> D]to high when message arrives 
+          if(digitalRead(dio0) == TRUE)
+        {
+            handleInterrupt();
+
+            //print buffer
+            printf("Buffer: \n "); 
+            int i;
+            
+            for(i=0; i < sizeof(_buf);i++){
+                printf("%s ", _buf[i]);     
+            }
+        }
     }
 
-
-	int i;
-	for(i=0; i < sizeof(_buf);i++){
-		printf("%s",(char *) _buf[i]);		
-	}
 	
-	//while(1);
+	
     return 0;
 }
