@@ -155,9 +155,8 @@ void spiBurstRead(uint8_t * payload , uint8_t size)
         
     for(int i = 0; i < receivedbytes; i++)
     {
-        //payload[i] = readRegister(REG_FIFO);
-        _buf[i] = readRegister(REG_FIFO);
-
+        payload[i] = readRegister(RH_RF95_REG_00_FIFO);
+        //_buf[i] = readRegister(REG_FIFO);
     }
 
 }
@@ -184,7 +183,10 @@ void handleInterrupt()
         
         // Reset the fifo read ptr to the beginning of the packet
         //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
-        writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR) - readRegister(RH_RF95_REG_13_RX_NB_BYTES)));
+        //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR) - readRegister(RH_RF95_REG_13_RX_NB_BYTES)));
+        
+        writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, readRegister(RH_RF95_REG_0F_FIFO_RX_BASE_ADDR));
+
         spiBurstRead(_buf, len);
         _bufLen = len;
         writeRegister(RH_RF95_REG_12_IRQ_FLAGS, 0xff); // Clear all IRQ flags
@@ -381,8 +383,6 @@ int main (void){
           if(digitalRead(dio0) == TRUE)
         {
             handleInterrupt();
-            printf("Interrupt !!!!!!!!!!!!!!!!! \n "); 
-
             //print buffer
             printf("Buffer: \n "); 
             int i;
@@ -392,15 +392,21 @@ int main (void){
             }
         }
 
-        if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) != FALSE){
+        if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == 0x50){
 
-        printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
-        printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
-        printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
-        printf("************************************\n");
+            printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
+            printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
+            printf("\n");
+            printf("Byte Addr of the last writen Rx Byte: %x\n", readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR));            
+            printf("Received Number of Bytes: %x\n", readRegister(RH_RF95_REG_13_RX_NB_BYTES));
+            printf("FiFo Current Rx Addr: %x\n", readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
+            printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
+            printf("************************************\n");
         }
         
 
+);
+        //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR)
     }
 
 	
