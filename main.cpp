@@ -386,6 +386,18 @@ int main (void){
         //RFM95 Modul sets DIO0 pin (check pinlayout on the breakout board [Adafruit RFM9x -> D]to high when message arrives 
           if(digitalRead(dio0) == TRUE)
         {
+            if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == RH_RF95_PACKET_RECEPTION_COMPLETE){
+            
+                printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
+                printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
+                printf("\n");
+                printf("Byte Addr of the last writen Rx Byte: %x\n", readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR));            
+                printf("Received Number of Bytes: %x\n", readRegister(RH_RF95_REG_13_RX_NB_BYTES));
+                printf("FiFo Current Rx Addr: %x\n", readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
+                printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
+                printf("************************************\n");
+            }
+            
             handleInterrupt();
             //print buffer
             printf("Buffer: \n "); 
@@ -396,17 +408,7 @@ int main (void){
             }
         }
 
-        if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == RH_RF95_PACKET_RECEPTION_COMPLETE){
-
-            printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
-            printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
-            printf("\n");
-            printf("Byte Addr of the last writen Rx Byte: %x\n", readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR));            
-            printf("Received Number of Bytes: %x\n", readRegister(RH_RF95_REG_13_RX_NB_BYTES));
-            printf("FiFo Current Rx Addr: %x\n", readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
-            printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
-            printf("************************************\n");
-        }
+       
         
     }
 
