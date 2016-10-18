@@ -152,7 +152,7 @@ void spiBurstRead(char * payload , uint8_t size)
 {
     
     //uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
-    receivedbytes = size;
+    uint8_t receivedbytes = size;
         
     for(int i = 0; i < receivedbytes; i++)
     {
@@ -183,7 +183,7 @@ void handleInterrupt()
         
         // Reset the fifo read ptr to the beginning of the packet
         //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
-        writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR) - readRegister(RH_RF95_REG_13_RX_NB_BYTES)))
+        writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR) - readRegister(RH_RF95_REG_13_RX_NB_BYTES)));
         spiBurstRead(_buf, len);
         _bufLen = len;
         writeRegister(RH_RF95_REG_12_IRQ_FLAGS, 0xff); // Clear all IRQ flags
