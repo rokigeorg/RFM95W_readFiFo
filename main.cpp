@@ -156,7 +156,9 @@ void spiBurstRead(char * payload , uint8_t size)
         
     for(int i = 0; i < receivedbytes; i++)
     {
-        payload[i] = readRegister(REG_FIFO);
+        //payload[i] = readRegister(REG_FIFO);
+        _buf[i] = readRegister(REG_FIFO);
+
     }
 
 }
