@@ -393,7 +393,7 @@ int main (void){
             }
         }
 
-        if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == 0x50){
+        if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == RH_RF95_PACKET_RECEPTION_COMPLETE){
 
             printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
             printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));

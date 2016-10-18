@@ -175,6 +175,7 @@
 
 // RH_RF95_REG_12_IRQ_FLAGS                           0x12
 #define RH_RF95_RX_TIMEOUT                            0x80
+#define RH_RF95_PACKET_RECEPTION_COMPLETE			  0x50
 #define RH_RF95_RX_DONE                               0x40
 #define RH_RF95_PAYLOAD_CRC_ERROR                     0x20
 #define RH_RF95_VALID_HEADER                          0x10
