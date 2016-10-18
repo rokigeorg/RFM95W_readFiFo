@@ -298,8 +298,7 @@ void SetupLoRa()
     delay(100);
     digitalWrite(RST, LOW);
     delay(100);
-
-	printf("SX1276 detected, starting.\n");
+    printf("SX1276 detected, starting.\n");
 
     digitalWrite(RST, LOW);
     delay(100);
@@ -314,7 +313,7 @@ void SetupLoRa()
     } else {
         printf("Unrecognized transceiver.\n");
         printf("Version: 0x%x\n",version);
-        exit(1);
+       // exit(1);
     }
     
 	// Set Continous Sleep Mode
@@ -403,11 +402,10 @@ int main (void){
             int i;
             
             for(i=0; i < (sizeof(_buf) - 1);i++){
-                printf("%c ", _buf[i]);
+
+                printf("%x ", _buf[i]);     
             }
         }
-
-       
         
     }
 
