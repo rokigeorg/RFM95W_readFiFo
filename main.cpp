@@ -403,7 +403,7 @@ int main (void){
             int i;
             
             for(i=0; i < (sizeof(_buf) - 1);i++){
-                printf("%s ", _buf[i]);     
+                printf("%c ", _buf[i]);
             }
         }
 
