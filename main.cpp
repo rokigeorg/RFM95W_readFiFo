@@ -206,7 +206,7 @@ void handleInterrupt()
     }
     */
 
-    setModeIdle();
+    //setModeIdle();
     writeRegister(RH_RF95_REG_12_IRQ_FLAGS, 0xff); // Clear all IRQ flags
 }
 
@@ -390,9 +390,14 @@ int main (void){
             }
         }
 
+        if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) != FALSE){
+
         printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
         printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
+        printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
         printf("************************************\n");
+        }
+        
 
     }
 
