@@ -311,7 +311,7 @@ void SetupLoRa()
     }
     
 	// Set Continous Sleep Mode
-   	writeRegister(REG_OPMODE, RH_RF95_LONG_RANGE_MODE);
+   	writeRegister(RH_RF95_REG_01_OP_MODE, RH_RF95_LONG_RANGE_MODE);
     printf("Set in LONG_RANGE_MODE. REG_OPMODE value: %x \n", readRegister(REG_OPMODE));
 
     //set Frequency to 868.1 MHz by default
@@ -373,14 +373,6 @@ int main (void){
     // printAllRegisters
     printAllRegisters();
 
-    handleInterrupt();
-    //print buffer
-    printf("Buffer: \n "); 
-    int i;
-    
-    for(i=0; i < sizeof(_buf);i++){
-    printf("%s ", _buf[i]);     
-    }
 
     while(1){
         //check if interrupt flag has been set
@@ -399,14 +391,9 @@ int main (void){
             }
         }
 
-        handleInterrupt();
-        //print buffer
-        printf("Buffer: \n "); 
-        int i;
-                    
-        for(i=0; i < sizeof(_buf);i++){
-        printf("%s ", _buf[i]);     
-        }
+        printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
+        printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
+        printf("************************************\n");
 
     }
 
