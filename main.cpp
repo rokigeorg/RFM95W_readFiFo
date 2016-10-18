@@ -401,7 +401,7 @@ int main (void){
             printf("Buffer: \n "); 
             int i;
             
-            for(i=0; i < sizeof(_buf);i++){
+            for(i=0; i < (sizeof(_buf) - 1);i++){
                 printf("%s ", _buf[i]);     
             }
         }
