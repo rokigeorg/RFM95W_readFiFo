@@ -404,9 +404,6 @@ int main (void){
             printf("************************************\n");
         }
         
-
-);
-        //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR)
     }
 
 	
