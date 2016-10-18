@@ -185,9 +185,10 @@ void handleInterrupt()
         //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
         //writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, (readRegister(RH_RF95_REG_25_FIFO_RX_BYTE_ADDR) - readRegister(RH_RF95_REG_13_RX_NB_BYTES)));
         
-        uint8_t fiFo_Addr = readRegister(RH_RF95_REG_0F_FIFO_RX_BASE_ADDR);
+        uint8_t fiFo_Addr = readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR);
 
         writeRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR, fiFo_Addr);
+        printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
 
         spiBurstRead(_buf, len);
         _bufLen = len;
