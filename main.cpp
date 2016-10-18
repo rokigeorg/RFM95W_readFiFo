@@ -176,7 +176,7 @@ void handleInterrupt()
     {
     _rxBad++;
     }
-    else if (_mode == RHModeRx && irq_flags & RH_RF95_RX_DONE)
+    else if (irq_flags & RH_RF95_RX_DONE) //_mode == RHModeRx && irq_flags & RH_RF95_RX_DONE
     {
         // Have received a packet
         uint8_t len = readRegister(RH_RF95_REG_13_RX_NB_BYTES);
@@ -397,7 +397,7 @@ int main (void){
                 // printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
                 // printf("************************************\n");
             }
-            
+            handleInterrupt();
             handleInterrupt();
             //print buffer
             //printf("Buffer: \n "); 
