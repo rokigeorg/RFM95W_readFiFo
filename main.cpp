@@ -77,8 +77,7 @@ uint8_t             _myInterruptIndex;
 /// Number of octets in the buffer
 volatile uint8_t    _bufLen;
 /// The receiver/transmitter buffer
-//uint8_t
-char             _buf[RH_RF95_MAX_PAYLOAD_LEN];
+uint8_t             _buf[RH_RF95_MAX_PAYLOAD_LEN];
 /// True when there is a valid message in the buffer
 volatile bool       _rxBufValid;
 /// The value of the last received RSSI value, in some transport specific units
@@ -148,7 +147,7 @@ void setModeIdle()
     }
 }
 
-void spiBurstRead(char * payload , uint8_t size)
+void spiBurstRead(uint8_t * payload , uint8_t size)
 {
     
     //uint8_t receivedCount = readRegister(RH_RF95_REG_13_RX_NB_BYTES);     //read register which tells the Number of received bytes
