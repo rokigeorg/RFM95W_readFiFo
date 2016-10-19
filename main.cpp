@@ -290,6 +290,10 @@ void printAllRegisters(){
     }
 }
 
+void clearCharBuffer(char * arr){
+    memset(arr[0], 0, sizeof(arr));
+}
+
 void SetupLoRa()
 {
     //Reset of the RFM95W
@@ -413,6 +417,8 @@ int main (void){
                 charBuffer[i] = (char) _buf[i];
                 printf("%c ", charBuffer[i]);     
             }
+            //fill the charBuffer to all 0
+            clearCharBuffer(charBuffer);
         }
         
     }
