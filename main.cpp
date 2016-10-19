@@ -291,7 +291,7 @@ void printAllRegisters(){
 }
 
 void clearCharBuffer(char * arr){
-    memset(arr[0], 0, sizeof(arr));
+    memset(&arr[0], 0, sizeof(arr));
 }
 
 void SetupLoRa()
