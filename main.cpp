@@ -403,6 +403,7 @@ int main (void){
                 printf("FiFo Current Rx Addr: %x\n", readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
                 printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
                 printf("************************************\n");
+                printf("Interrupt REG_12_IRQ_FLAGS %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
             }
             handleInterrupt();
             //print buffer
