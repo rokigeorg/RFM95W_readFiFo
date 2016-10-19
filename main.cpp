@@ -379,6 +379,7 @@ int main (void){
     // printAllRegisters
     printAllRegisters();
 
+    char charBuffer[RH_RF95_MAX_PAYLOAD_LEN];
 
     while(1){
         //check if interrupt flag has been set
@@ -404,6 +405,13 @@ int main (void){
             for(i=0; i < (sizeof(_buf) - 1);i++){
 
                 printf("%x ", _buf[i]);     
+            }
+            printf("\n");
+
+            for(i=0; i < (sizeof(_buf) - 1);i++){
+                
+                charBuffer[i] = (char *)_buf[i];
+                printf("%c ", charBuffer[i]);     
             }
         }
         
