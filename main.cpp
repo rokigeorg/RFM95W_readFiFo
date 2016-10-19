@@ -386,8 +386,11 @@ int main (void){
     char charBuffer[RH_RF95_MAX_PAYLOAD_LEN];
 
     while(1){
+
+        //busy waiting, when Pin 0 goes HIGH it contiuous  
+        while(digitalRead(dio0));
         //check if interrupt flag has been set
-        //RFM95 Modul sets DIO0 pin (check pinlayout on the breakout board [Adafruit RFM9x -> D]to high when message arrives 
+        //RFM95 Modul sets DIO0 pin (check pinlayout on the breakout board [Adafruit RFM9x -> D]to high when message arrives          
           if(digitalRead(dio0) == TRUE)
         {
             if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == RH_RF95_PACKET_RECEPTION_COMPLETE){
