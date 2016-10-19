@@ -418,7 +418,7 @@ int main (void){
                 printf("%c ", charBuffer[i]);     
             }
             //fill the charBuffer to all 0
-            clearCharBuffer(&charBuffer);
+            clearCharBuffer(charBuffer);
         }
         
     }
