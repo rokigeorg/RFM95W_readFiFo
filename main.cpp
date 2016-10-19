@@ -402,13 +402,13 @@ int main (void){
             printf("Buffer: \n "); 
             int i;
             
-            for(i=0; i < (sizeof(_buf) - 1);i++){
+            // for(i=0; i < (sizeof(_buf) - 1);i++){
 
-                printf("%x ", _buf[i]);     
-            }
+            //     printf("%x ", _buf[i]);     
+            // }
             printf("\n");
 
-            for(i=0; i < (sizeof(_buf) - 1);i++){
+            for(i=0; i < _bufLen;i++){
 
                 charBuffer[i] = (char) _buf[i];
                 printf("%c ", charBuffer[i]);     
