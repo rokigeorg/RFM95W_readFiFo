@@ -409,8 +409,8 @@ int main (void){
             printf("\n");
 
             for(i=0; i < (sizeof(_buf) - 1);i++){
-                
-                charBuffer[i] = (char *)_buf[i];
+
+                charBuffer[i] = (char) _buf[i];
                 printf("%c ", charBuffer[i]);     
             }
         }
