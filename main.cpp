@@ -404,13 +404,12 @@ int main (void){
             handleInterrupt();
             //print buffer
             printf("Buffer: \n "); 
-            int i;
+            static int i;
             
             // for(i=0; i < (sizeof(_buf) - 1);i++){
 
             //     printf("%x ", _buf[i]);     
             // }
-            printf("\n");
 
             for(i=0; i < _bufLen;i++){
 
