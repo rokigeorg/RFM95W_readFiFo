@@ -388,7 +388,7 @@ int main (void){
     while(1){
 
         //busy waiting, when Pin 0 goes HIGH it contiuous  
-        while(digitalRead(dio0));
+        //while(digitalRead(dio0));
         //check if interrupt flag has been set
         //RFM95 Modul sets DIO0 pin (check pinlayout on the breakout board [Adafruit RFM9x -> D]to high when message arrives          
           if(digitalRead(dio0) == TRUE)
@@ -403,7 +403,7 @@ int main (void){
                 printf("FiFo Current Rx Addr: %x\n", readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
                 printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
                 printf("************************************\n");
-                printf("Interrupt REG_12_IRQ_FLAGS %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
+                printf("Interrupt REG_12_IRQ_FLAGS 0x%x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
             }
             handleInterrupt();
             //print buffer
