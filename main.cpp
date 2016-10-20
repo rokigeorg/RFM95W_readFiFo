@@ -394,7 +394,8 @@ int main (void){
           if(digitalRead(dio0) == TRUE)
         {
             if(readRegister(RH_RF95_REG_12_IRQ_FLAGS) == RH_RF95_PACKET_RECEPTION_COMPLETE){
-            
+                printf("\n");
+                printf("************************************\n");
                 printf("Mode: %x\n", readRegister(RH_RF95_REG_01_OP_MODE) );
                 printf("Interrupt Register: %x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
                 printf("\n");
@@ -402,8 +403,7 @@ int main (void){
                 printf("Received Number of Bytes: %x\n", readRegister(RH_RF95_REG_13_RX_NB_BYTES));
                 printf("FiFo Current Rx Addr: %x\n", readRegister(RH_RF95_REG_10_FIFO_RX_CURRENT_ADDR));
                 printf("FiFo Addr Ptr: %x\n", readRegister(RH_RF95_REG_0D_FIFO_ADDR_PTR));
-                printf("************************************\n");
-                printf("Interrupt REG_12_IRQ_FLAGS 0x%x\n", readRegister(RH_RF95_REG_12_IRQ_FLAGS));
+                
             }
             handleInterrupt();
             //print buffer
